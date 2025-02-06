@@ -11,7 +11,10 @@ import org.springframework.stereotype.Service;
 import com.rk.railway_ticket_management.model.Users;
 import com.rk.railway_ticket_management.repository.UserRepository;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class UserService {
 	@Autowired
 	UserRepository repository;
@@ -30,13 +33,8 @@ public class UserService {
 		}
 	}
 	
-	public ResponseEntity<Users> deleteUser(int userId) {
-		Users user = repository.findByUserId(userId);
-		if(user == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}else {
-			return new ResponseEntity<>(user, HttpStatus.OK);
-		}
+	public void deleteUser(int id) {
+		repository.deleteById(id);
 	}
 	
 	public ResponseEntity<Users> getUser(int id) {
@@ -71,6 +69,14 @@ public class UserService {
         return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
-	
-	
+	public boolean checkPassword(Users user, String rawPassword) {
+        return passwordEncoder.matches(rawPassword, user.getPassword());
+    }
+
+    public void updatePassword(int userId, String newPassword) {
+    	log.info(""+userId);
+    	Users user=repository.findByUserId(userId);
+        user.setPassword(passwordEncoder.encode(newPassword));
+        repository.save(user);
+    }
 }

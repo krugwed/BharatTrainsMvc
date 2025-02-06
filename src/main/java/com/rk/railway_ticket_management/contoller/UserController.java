@@ -27,7 +27,6 @@ import com.rk.railway_ticket_management.utils.JwtUtil;
 
 import lombok.extern.slf4j.Slf4j;
 
-@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/auth/users")
 @Slf4j
@@ -60,17 +59,18 @@ public class UserController {
 	        // Assuming Users class has a getRole() method
 	        String role = ((Users) userDetails).getRole().name();
 	        
-	        LoginResponse loginResponse = new LoginResponse(jwt, role);
+	        int userId= ((Users) userDetails).getUserId();	        
+	        LoginResponse loginResponse = new LoginResponse(jwt, role, userId);
 	        return new ResponseEntity<>(loginResponse, HttpStatus.OK);
 	    } catch (Exception e) {
 	        log.error("Exception occurred while createAuthenticationToken " + e);
-	        return new ResponseEntity<>(new LoginResponse(null, null), HttpStatus.BAD_REQUEST);
+	        return new ResponseEntity<>(new LoginResponse(null, null,0), HttpStatus.BAD_REQUEST);
 	    }
 	}
 
 	@DeleteMapping("/{userId}")
-	public ResponseEntity<Users> deleteUser(@PathVariable int userId) {
-		return service.deleteUser(userId);
+	public void  deleteUser(@PathVariable int userId) {
+		service.deleteUser(userId);
 	}
 
 	@GetMapping("/{userId}")
@@ -83,8 +83,14 @@ public class UserController {
 		return service.getUsers();
 	}
 	
-	@PutMapping("{userId}")
+	@PutMapping("/{userId}")
 	public ResponseEntity<Users> updateUser(@PathVariable int userId, @RequestBody Users user){
 		return service.updateUser(userId, user);
+	}
+	
+	@PostMapping("/{userId}")
+	public void  updatePassword(@PathVariable int userId, @RequestBody String newPassword){
+		log.info(newPassword);
+		 service.updatePassword(userId, newPassword);
 	}
 }

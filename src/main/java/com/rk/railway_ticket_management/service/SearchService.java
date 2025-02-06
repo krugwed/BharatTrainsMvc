@@ -1,4 +1,5 @@
 package com.rk.railway_ticket_management.service;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,5 +61,9 @@ public class SearchService {
 		}catch(Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+	}
+	
+	public List<String> getAllStations(){
+		return repository.findAllStations();
 	}
 }

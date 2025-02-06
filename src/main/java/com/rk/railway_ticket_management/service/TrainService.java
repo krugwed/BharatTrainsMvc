@@ -1,5 +1,7 @@
 package com.rk.railway_ticket_management.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,13 +15,14 @@ public class TrainService {
 	@Autowired
 	TrainRepository repository;
 	
-	public ResponseEntity<Train> saveTrain(Train train){
+	public Optional<Train> saveTrain(Train train){
 		try {
 			repository.save(train);
-			return new ResponseEntity<>(HttpStatus.CREATED);
+			return Optional.empty();
+			
 		}catch(Exception e) {
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+			return Optional.empty();	
+			}
 	}
 	
 	public String getTrainName(String trainId) {

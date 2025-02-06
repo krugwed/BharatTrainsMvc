@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.rk.railway_ticket_management.dto.SearchRequest;
 import com.rk.railway_ticket_management.dto.SearchResponse;
+import com.rk.railway_ticket_management.dto.Stations;
 import com.rk.railway_ticket_management.model.Routes;
 import com.rk.railway_ticket_management.service.SearchService;
 
@@ -23,7 +24,8 @@ public class SearchController {
 	@Autowired
 	SearchService searchService;
 	
-	@GetMapping("/search")
+	
+	@PostMapping("/search")
 	public ResponseEntity<List<SearchResponse>> search(@RequestBody SearchRequest searchRequest){
 		List<SearchResponse> response = searchService.search(searchRequest);
 		return ResponseEntity.ok(response);
@@ -33,5 +35,15 @@ public class SearchController {
 	public ResponseEntity<List<Routes>> addRoute(@RequestBody List<Routes> routes){
 		return searchService.addRoute(routes);
 	}
+	
+	@GetMapping("/stations")
+	public List<String> findStations(){
+		return searchService.getAllStations();
+	}
+	
+	
+	
+	
+	
 	
 }

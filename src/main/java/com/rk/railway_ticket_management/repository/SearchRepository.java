@@ -22,4 +22,7 @@ public interface SearchRepository extends JpaRepository<Routes, Integer> {
 	@Query("SELECT new com.rk.railway_ticket_management.dto.Stations(R.station) " + "FROM Routes AS R "
 			+ "WHERE R.trainId = :trainId")
 	List<Stations> findByTrainId(String trainId);
+	
+	@Query("SELECT distinct R.station FROM Routes R")
+    List<String> findAllStations();
 }
